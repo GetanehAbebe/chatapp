@@ -1,0 +1,39 @@
+@import "../abstruct/variables";
+.header {
+  height: 95vh;
+  margin: 0 0.5rem;
+  background-image: linear-gradient(
+      to right bottom,
+      rgba($color-wheat, 0.003),
+      rgba($color-green-dark, 0.1)
+    ),
+    url("https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  background-position: top;
+  background-size: cover;
+  object-fit: fill;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  &__text-box {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  @include responed(phone) {
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+  }
+  &__logo-box {
+    position: absolute;
+    top: 4rem;
+    left: 4rem;
+    color: $color-grey;
+  }
+  &__logo {
+    height: 3.5rem;
+  }
+  img {
+    object-fit: cover;
+  }
+}

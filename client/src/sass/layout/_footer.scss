@@ -1,0 +1,35 @@
+.footer {
+  background-color: #333;
+  padding: 10rem 0;
+  @include responed(tab-port) {
+    padding: 8rem 0;
+  }
+  &__logo-box {
+    text-align: center;
+    margin-bottom: 8rem;
+    @include responed(tab-port) {
+      margin-bottom: 3rem;
+    }
+  }
+  &__logo {
+    width: 15rem;
+    height: auto;
+  }
+  &__navigation {
+    border-top: 0.2rem solid $color-grey-light-1;
+    padding-top: 2rem;
+    display: inline-block;
+    @include responed(tab-port) {
+      width: 100%;
+    }
+  }
+  &__list {
+    list-style: none;
+  }
+  &__item {
+    display: inline-block;
+    &:not(:last-child) {
+      margin-right: 1.5rem;
+    }
+  }
+}

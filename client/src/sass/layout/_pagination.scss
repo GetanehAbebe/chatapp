@@ -1,0 +1,12 @@
+.paginationBttns {
+  display: flex;
+  justify-content: center;
+  a {
+    color: $color-black;
+  }
+  .paginationActive {
+    background-color: $color-default;
+    width: 2rem;
+    border-radius: 50%;
+  }
+}
