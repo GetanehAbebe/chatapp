@@ -33,7 +33,7 @@ const getUserConversations = async (userId) => {
             Authorization: "Bearer " + localStorage.getItem("token"),
         },
     })
-    return response.data        
+    return response.data
 };
 
 
@@ -62,9 +62,10 @@ const addToContacts = async (userId, users) => {
 };
 
 
-const addConversation = async (name, users, userId) => {
+const addConversation = async (name, users) => {
+    const userId = localStorage.getItem('userId')
     const participants = [{ name, users, userId }]
-    const response = await axios.post('http://localhost:5000/api/conversation', { name, users, userId }, { withCredentials: true })
+    const response = await axios.post('http://localhost:5000/api/conversation', { name, userId, users }, { withCredentials: true })
     return response.data
 };
 

@@ -1,9 +1,6 @@
 
 const User = require('../models/User')
-
-
 const multer = require('multer')
-const HttpError = require('../models/http-error')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const path = require("path");
@@ -38,30 +35,24 @@ const login = async (req, res, next) => {
         const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
         console.log("passwords", user.password, passValues)
         if (user && !passValues) {
-            const error = new HttpError('wrong password', 421)
-            // return next({ code: error.code, message: error.message })
             return res.status(401).json({ message: 'wrong password' })
-            // res.status(401).json()
-            return
+
         }
         user.token = token
     } catch (e) {
-        const error = new HttpError('logging in faild,please try again later', 500)
+        // const error = new HttpError('logging in faild,please try again later', 500)
 
-        return next({ message: error.message })
+        return next({ message: e.message })
     }
     return res.status(200).json(user)
 }
 
 const register = async (req, res, next) => {
-    console.log('arrived to signup', req.file)
-
-    // const values =  JSON.parse(req.body.userDetails)
-    // console.log('values', values)
-    const { firstName, lastName, password, confirmPassword, email } = JSON.parse(req.body.userDetails)
+    console.log('req', req.body)
+    const { firstName, lastName, password, confirmPassword, email } = req.body
     const hash = await bcrypt.hash(password, 10)
     const newUser = new User({
-        firstName, lastName, password: hash, confirmPassword, email, contacts: [], profileImage: `uploads/${req.file.filename}`
+        firstName, lastName, password: hash, confirmPassword, email, contacts: []
     })
 
     try {

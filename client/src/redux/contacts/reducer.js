@@ -1,10 +1,11 @@
-const {FETCH_CONTACTS_REQUEST,FETCH_CONTACTS_SUCCESS,
-    FETCH_CONTACTS_FAILURE} = require('./types')
+const { FETCH_CONTACTS_REQUEST, FETCH_CONTACTS_SUCCESS,
+    FETCH_CONTACTS_FAILURE, FAILURE, SUCCESS, ADD_USER } = require('./types')
 const userDetails = JSON.parse(localStorage.getItem('user-Details'))
 const initialState = {
     loading: false,
     users: userDetails ? JSON.parse(localStorage.getItem('user-Details')).contacts : [],
-    error: ''
+    error: '',
+    success: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -24,7 +25,29 @@ const reducer = (state = initialState, action) => {
             return {
                 loading: false,
                 users: [],
-                error: action.payload
+                error: action.payload,
+                success: false
+            }
+        case ADD_USER:
+            return {
+                
+                loading: false,
+                users: action.payload,
+                error: '',
+                success:true
+            }
+        case SUCCESS:
+            return {
+                ...state, success: true,
+                loading: false,
+                error: ''
+            }
+        case FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                success: false
             }
         default: return state
     }

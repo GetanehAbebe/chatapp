@@ -1,4 +1,4 @@
-const { GET_CONVERSATIONS,JOIN_FAILURE, JOIN_SUCCESS, REQUEST, ROOM_ID, AFTER_POST_MESSAGE } = require('./types')
+const { GET_CONVERSATIONS, JOIN_FAILURE, JOIN_SUCCESS, REQUEST, ROOM_ID, AFTER_POST_MESSAGE } = require('./types')
 
 const initialState = {
     currentRoom: '',
@@ -20,6 +20,7 @@ const reducer = (state = initialState, action) => {
             }
         case JOIN_SUCCESS:
             return {
+                ...state,
                 currentRoom: action.payload._id,
                 messages: action.payload.messages,
                 members: action.payload.participants,
@@ -47,7 +48,7 @@ const reducer = (state = initialState, action) => {
 
         case GET_CONVERSATIONS:
             return {
-                ...state, conversations: action.payload
+                ...state, conversations: action.payload, success: true
             }
         default: return state
     }

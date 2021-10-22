@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import socketIOClient from 'socket.io-client'
 import { afterPostMessage } from '../redux/conversations/actions'
 import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
 function LiveChat() {
     let socket
     const [message, setMessage] = useState('')
@@ -52,16 +53,18 @@ function LiveChat() {
             socket.emit('typing', user)
         }
     }
-    const sendMessage = () => {
+    const sendMessage = (e) => {
+        e.preventDefault()
         const chatMessage = {
             chatroomId: currentRoom,
             message: { userId: localStorage.getItem('userId'), name, content: message, date: Date.now() },
             userId: localStorage.getItem('userId')
         }
-        if (socket) {
-            socket.emit("chatroomMessage", chatMessage);
-            setMessage("");
-        }
+        axios.post('http://localhost:5000/api/conversation/send', { cahtId: currentRoom, chat: message }).then(response => console.log(response))
+        // if (socket) {
+        //     socket.emit("chatroomMessage", chatMessage);
+        //     setMessage("");
+        // }
     };
     return (
         <>
@@ -70,7 +73,6 @@ function LiveChat() {
             {name && <h2>{name}</h2>}
             {typing && <p>{typing}</p>}
             {messages.length === 0 ? <p>no messages yet</p> : (<div className="messages">
-
                 {messages.map((message, i) => (
                     <div className="row">
                         <div className="story">
@@ -92,22 +94,29 @@ function LiveChat() {
                 }
             </div >)}
 
-            <div className="chatroomActions">
-                <div>
-                    <input
-                        type="text"
-                        name="message"
-                        placeholder="Say something!"
-                        onChange={sendUserAction}
-                        value={message}
-                    />
-                </div>
-                <div>
-                    <button className="join" onClick={sendMessage}>
-                        Send
-                    </button>
-                </div>
-            </div>
+            <form className="message-form" onSubmit={sendMessage}>
+                <input
+                    className="message-input"
+                    placeholder="Send a message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                />
+                <label htmlFor="upload-button">
+                    <span className="image-button">
+
+                    </span>
+                </label>
+                {/* <input
+                    type="file"
+                    multiple={false}
+                    id="upload-button"
+                    style={{ display: 'none' }}
+                    onChange={handleUpload.bind(this)}
+                /> */}
+                <button type="submit" className="send-button">
+                    send
+                </button>
+            </form>
         </>
     )
 }

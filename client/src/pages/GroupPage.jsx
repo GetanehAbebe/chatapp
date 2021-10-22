@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Multiselect from 'multiselect-react-dropdown';
 import Card from '../components/UIElemets/Card'
 import { useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { addConversation } from '../DAL/index'
 import { fetchUsers } from '../redux/contacts/actions'
 export default function GroupPage() {

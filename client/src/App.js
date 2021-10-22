@@ -10,53 +10,35 @@ import GroupPage from './pages/GroupPage'
 import Register from "./pages/Register";
 import Contacts from "./pages/Contacts";
 import LiveChat from "./pages/LiveChat";
+import NewContact from "./pages/NewContact";
+import ChatFeed from "./pages/chat/ChatFeed";
 function App() {
   const { user } = useSelector(state => state.user)
-  const [socket, setSocket] = useState(null);
-  const setupSocket = () => {
-    const token = localStorage.getItem("token");
-    if (token && !socket) {
-      const newSocket = io("http://localhost:5000", {
-        query: {
-          token: localStorage.getItem("token"),
-        },
-      });
-      newSocket.on("disconnect", () => {
-        setSocket(null);
-        setTimeout(setupSocket, 3000);
-      });
-      setSocket(newSocket);
-    }
-  };
-
-  useEffect(() => {
-    setupSocket();
-    return () => { }
-  }, []);
   let routes
   if (user) {
     routes = (
       <Switch>
-        <Route path="/conversations" render={() => <DashboardPage />} exact socket={socket} />
-        <Route path="/chatroom" render={() => <LiveChat socket={socket} />} exact />
+        <Route path="/conversations" render={() => <DashboardPage />} exact />
+        <Route path="/chatroom" render={() => <LiveChat />} exact />
         <Route
           path="/dashboard"
-          render={() => <DashboardPage socket={socket} />}
+          render={() => <DashboardPage />}
           exact
         />
         <Route
           path="/contacts"
-          render={() => <Contacts socket={socket} />}
+          render={() => <Contacts />}
           exact
         />
         <Route
           path="/signup"
           exact
-          render={() => <Register socket={socket} />}
+          render={() => <Register />}
         />
         <Route path="/group" exact>
           <GroupPage />
         </Route>
+        <Route path="/newcontact" render={() => <ChatFeed />} exact />
         <Redirect to="/" />
       </Switch >
     );
@@ -64,10 +46,10 @@ function App() {
     routes = (<Switch>
       <Route
         path="/"
-        render={() => <IndexPage socket={socket} />}
+        render={() => <ChatFeed />}
         exact />
-      <Route path="/register" component={Register} exact />
-      <Route path="/login" render={() => <LoginPage setupSocket={setSocket} />} exact />
+      <Route path="/register" render={() => <Register />} exact />
+      <Route path="/login" render={() => <LoginPage />} exact />
       <Redirect to="/" />
     </Switch>
     );

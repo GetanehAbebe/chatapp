@@ -17,10 +17,11 @@ const getContacts = async (req, res, next) => {
 
 const addToContacts = async (req, res, next) => {
     const { id, userId, name } = req.body
+    console.log('req body', req.body)
     try {
         const user = await User.findById(userId)
         console.log('user', user)
-        const newContact = await User.findOne({ id: id })
+        const newContact = await User.findById(id)
         console.log('new contact', newContact)
         if (!newContact) {
             throw Error('the Id not exist')
@@ -30,17 +31,17 @@ const addToContacts = async (req, res, next) => {
         }
         const newContacts = await user.save()
         // console.log(contacts)
-        res.status(200).json(newContacts)
+        res.status(200).json(newContacts.contacts)
     } catch (e) {
         console.log(e.message)
-        res.status(200).json({ message: 'there is a problem with an Id key,please write again' })
+        res.status(400).json(e.message)
     }
 }
 const removeFromContacts = async (req, res, next) => {
     const userId = req.body.userId;
     const contactId = req.body.contactId
     try {
-        const user = await User.findOne({ id: userId })
+        const user = await User.findById(userId)
         console.log('user', user)
         const updatedContacts = user["contacts"].filter(contact => contact.userId !== contactId)
         user["contacts"] = updatedContacts

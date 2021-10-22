@@ -1,5 +1,6 @@
 const { JOIN_FAILURE, JOIN_SUCCESS, REQUEST, ROOM_ID, AFTER_POST_MESSAGE, GET_CONVERSATIONS } = require('./types')
 const axios = require('axios')
+const userId = localStorage.getItem('userId')
 
 
 export const getRoomChat = (roomId) => {
@@ -17,9 +18,19 @@ export const getRoomChat = (roomId) => {
 
 export const allConversations = () => {
     return (dispatch) => {
-        const userId = localStorage.getItem('userId')
         dispatch(request())
         axios.post('http://localhost:5000/api/conversation/get', { userId }).then(respnse => {
+            dispatch(appendConversations(respnse.data))
+        }).catch(e => {
+            dispatch(joinFailure(e.message))
+        })
+    }
+}
+
+export const createNewConversation = (name, users) => {
+    return (dispatch) => {
+        dispatch(request())
+        axios.post('http://localhost:5000/api/conversation', { name, userId, users }).then(respnse => {
             dispatch(appendConversations(respnse.data))
         }).catch(e => {
             dispatch(joinFailure(e.message))

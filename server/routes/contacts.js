@@ -3,7 +3,7 @@ const { getContacts, addToContacts, removeFromContacts } = require('../controlle
 const router = Router();
 
 router.post('/', getContacts)
-router.post('/add',addToContacts)
+router.post('/add', addToContacts)
 router.post('/remove', removeFromContacts)
 
 

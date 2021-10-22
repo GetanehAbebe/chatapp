@@ -6,7 +6,6 @@ export const login = (email, password) => {
         try {
             const response = await axios.post('http://localhost:5000/api/user/login', { email, password })
             console.log('async await', response)
-
             if (response.data.message) throw response.data.message
             dispatch(loginSuccess(response.data))
             appendToStorage(response.data)
@@ -15,11 +14,11 @@ export const login = (email, password) => {
         }
     }
 }
-export const signup = (object) => {
+export const signup = (object,object3) => {
     console.log('form data', object)
     return async (dispatch) => {
         dispatch(request())
-        axios.post('http://localhost:5000/api/user/signup', object)
+        axios.post('http://localhost:5000/api/user/signup', {...object3,...object})
             .then(response => {
                 dispatch(signupSuccess(response.data))
                 appendToStorage(response.data)
